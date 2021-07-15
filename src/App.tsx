@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import LoginPage from "./Pages/Login.page";
-import SignupPage from "./Pages/Signup.page";
-import DashboardPage from "./Pages/Dashboard.pages";
-import RecordingsPage from "./Pages/Recordings.page";
+import AppContainerPage from "./Pages/AppContainer.page";
+import AuthPage from "./Pages/Auth.page";
+import LecturePage from "./Pages/Lecture.page";
+import NotFoundPage from "./Pages/NotFound.page";
 
 interface Props {}
 
@@ -14,17 +14,21 @@ const App: React.FC<Props> = (props) => {
         <Route path="/" exact>
           <Redirect to="/login"></Redirect>
         </Route>
-        <Route path="/login">
-          <LoginPage></LoginPage>
+        <Route path={["/login", "/signup"]} exact>
+          <AuthPage></AuthPage>
         </Route>
-        <Route path="/signup">
-          <SignupPage></SignupPage>
+        <Route
+          path={[
+            "/dashboard",
+            "/recordings",
+            "/batch/:batchNumber/lecture/:lectureNumber",
+          ]}
+          exact
+        >
+          <AppContainerPage></AppContainerPage>
         </Route>
-        <Route path="/dashboard">
-          <DashboardPage></DashboardPage>
-        </Route>
-        <Route path="/recordings">
-          <RecordingsPage></RecordingsPage>
+        <Route>
+          <NotFoundPage></NotFoundPage>
         </Route>
       </Switch>
     </BrowserRouter>
