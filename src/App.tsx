@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import AppContainerPage from "./Pages/AppContainer.page";
 import AuthPage from "./Pages/Auth.page";
-import LecturePage from "./Pages/Lecture.page";
 import NotFoundPage from "./Pages/NotFound.page";
 
 interface Props {}
