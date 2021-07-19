@@ -30,35 +30,33 @@ const Login: FC<Props> = (props) => {
     });
 
   return (
-    <div className="min-h-screen w-full max-w-1/2 flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen w-1/2 flex flex-col items-center font-CorkFont">
+      <div className="flex flex-col w-full max-w-md py-11.429 items-start px-45.714">
         <div>
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-            alt="Workflow"
-          />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{" "}
+          <h1 className="mb-2 text-40 text-AuthHeadColor">
+            Log In to{" "}
+            <a href="#">
+              <span className="text-blue-700 font-semibold">CORK</span>
+            </a>
+          </h1>
+          <p className="text-14 font-bold tracking-wide mb-12 text-AuthHeadColor">
+            New Here?{" "}
             <a
               href="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className=" text-blue-700 border-b border-blue-700 border-solid"
             >
-              start your 14-day free trial
+              Create an account
             </a>
           </p>
         </div>
         <form
-          className="mt-8 space-y-6"
+          className="w-full"
           action="#"
           method="POST"
           onSubmit={handleSubmit}
         >
           <input type="hidden" name="remember" defaultValue="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="mb-2">
             <Input
               id="email"
               type="email"
@@ -68,7 +66,6 @@ const Login: FC<Props> = (props) => {
               error={errors.email}
               {...getFieldProps("email")}
               placeholder="Email address"
-              className="rounded-b-none"
             />
             <Input
               id="password"
@@ -79,50 +76,68 @@ const Login: FC<Props> = (props) => {
               error={errors.password}
               {...getFieldProps("password")}
               placeholder="Password"
-              className="rounded-t-none"
             />
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-900"
-              >
-                Remember me
-              </label>
+              <p className=" font-semibold text-AuthHeadColor text-14 tracking-widest">
+                Show Password
+              </p>
             </div>
 
             <div className="text-sm">
-              <Link
-                to="/forgot-password"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+              <button
+                type="submit"
+                // disabled={}
+                className="group relative w-full flex justify-center py-2 px-5 shadow-xl border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                Forgot your password?
-              </Link>
+                Log in
+              </button>
             </div>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              // disabled={}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <HiLockClosed
-                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                  aria-hidden="true"
-                />
+          <div className="mt-16 flex items-center justify-center text-AuthNoteColor">
+            <label className="flex text-base cursor-pointer">
+              <input
+                type="checkbox"
+                className="mt-1 mr-4 w-4 h-4 border-b border-solid"
+              />
+              Keep me logged in
+            </label>
+          </div>
+
+          <div className="text-center mt-4">
+            <a href="#">
+              <span className="font-bold text-blue-700 tracking-widest">
+                Forgot Password?
               </span>
-              Sign in
-            </button>
+            </a>
+          </div>
+
+          <p className="text-14 mt-24 my-auto text-AuthHeadColor font-semibold">
+            © 2020 All Rights Reserved.{" "}
+            <a href="#" className="text-blue-700">
+              CORK
+            </a>{" "}
+            is a product of Designreset.{" "}
+            <a href="#" className="text-blue-700">
+              Cookie Preferences
+            </a>
+            ,{" "}
+            <a href="#" className="text-blue-700">
+              {" "}
+              Privacy
+            </a>
+            , and{" "}
+            <a href="#" className="text-blue-700">
+              {" "}
+              Terms
+            </a>
+            .
+          </p>
+
+          <div>
             {isSubmitting && (
               <FaSpinner className="mt-5 animate-spin"></FaSpinner>
             )}

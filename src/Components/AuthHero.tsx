@@ -8,7 +8,9 @@ const AuthHero: FC<Props> = (props) => {
   useEffect(() => {
     console.log("AuthHero Rendering for the first time.");
   }, []);
-  return <div className="w-full h-screen bg-black">Logo will go here</div>;
+  return (
+    <div className="absolute left-1/2 bg-no-repeat w-1/2 bg-3/4 bg-center bg-authBgColor h-full bg-AuthImg"></div>
+  );
 };
 AuthHero.defaultProps = {};
 export default memo(AuthHero);
