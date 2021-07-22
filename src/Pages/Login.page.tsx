@@ -4,30 +4,35 @@ import { HiLockClosed } from "react-icons/hi";
 import { FaSpinner } from "react-icons/fa";
 import * as yup from "yup";
 import { Formik, useFormik } from "formik";
-import Input from "../Components/Input";
+import Input from "../Components/Input/Input";
 
 interface Props {}
 
 const Login: FC<Props> = (props) => {
   const history = useHistory();
-  const { handleSubmit, getFieldProps, touched, isSubmitting, errors } =
-    useFormik({
-      initialValues: {
-        email: "",
-        password: "",
-      },
-      validationSchema: yup.object().shape({
-        email: yup.string().required().email(),
-        password: yup.string().required().min(8),
-      }),
-      onSubmit: (data, helpers) => {
-        console.log("form submitting", data);
-        setTimeout(() => {
-          console.log("form submitted successfully");
-          history.push("/dashboard");
-        }, 5000);
-      },
-    });
+  const {
+    handleSubmit,
+    getFieldProps,
+    touched,
+    isSubmitting,
+    errors,
+  } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: yup.object().shape({
+      email: yup.string().required().email(),
+      password: yup.string().required().min(8),
+    }),
+    onSubmit: (data, helpers) => {
+      console.log("form submitting", data);
+      setTimeout(() => {
+        console.log("form submitted successfully");
+        history.push("/dashboard");
+      }, 5000);
+    },
+  });
 
   return (
     <div className="min-h-screen w-1/2 flex flex-col items-center font-CorkFont">
@@ -42,7 +47,7 @@ const Login: FC<Props> = (props) => {
           <p className="text-14 font-bold tracking-wide mb-12 text-AuthHeadColor">
             New Here?{" "}
             <a
-              href="#"
+              href="/signup"
               className=" text-blue-700 border-b border-blue-700 border-solid"
             >
               Create an account
