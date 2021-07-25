@@ -1,5 +1,7 @@
 import { FC, memo } from "react";
 import { Link } from "react-router-dom";
+import Avatar from "../Components/Avatar/Avatar";
+import ProgressBar from "../Components/ProgressBar/ProgressBar";
 
 interface Props {}
 

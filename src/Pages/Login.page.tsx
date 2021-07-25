@@ -1,10 +1,13 @@
 import React, { FC, memo, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { HiLockClosed } from "react-icons/hi";
+import { HiLockClosed, HiUser } from "react-icons/hi";
 import { FaSpinner } from "react-icons/fa";
 import * as yup from "yup";
 import { Formik, useFormik } from "formik";
 import Input from "../Components/Input/Input";
+import Button from "../Components/Button/Button";
+import { FiLock, FiUser } from "react-icons/fi";
+import Toggle from "../Components/Toggle";
 
 interface Props {}
 
@@ -35,8 +38,8 @@ const Login: FC<Props> = (props) => {
   });
 
   return (
-    <div className="min-h-screen w-1/2 flex flex-col items-center font-CorkFont">
-      <div className="flex flex-col w-full max-w-md py-11.429 items-start px-45.714">
+    <div className="min-h-screen w-1/2 break:w-full flex flex-col items-center font-CorkFont">
+      <div className="flex flex-col w-full max-w-md py-11.429 items-start px-29.714">
         <div>
           <h1 className="mb-2 text-40 text-AuthHeadColor">
             Log In to{" "}
@@ -44,7 +47,7 @@ const Login: FC<Props> = (props) => {
               <span className="text-blue-700 font-semibold">CORK</span>
             </a>
           </h1>
-          <p className="text-14 font-bold tracking-wide mb-12 text-AuthHeadColor">
+          <p className="text-14 font-bold tracking-wide mb-14 text-AuthHeadColor">
             New Here?{" "}
             <a
               href="/signup"
@@ -70,7 +73,8 @@ const Login: FC<Props> = (props) => {
               touched={touched.email}
               error={errors.email}
               {...getFieldProps("email")}
-              placeholder="Email address"
+              placeholder="Username"
+              Icon={FiUser}
             />
             <Input
               id="password"
@@ -81,24 +85,20 @@ const Login: FC<Props> = (props) => {
               error={errors.password}
               {...getFieldProps("password")}
               placeholder="Password"
+              Icon={FiLock}
             />
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <p className=" font-semibold text-AuthHeadColor text-14 tracking-widest">
+              <p className=" font-semibold text-AuthHeadColor mr-2 text-14 tracking-widest">
                 Show Password
               </p>
+              <Toggle></Toggle>
             </div>
 
             <div className="text-sm">
-              <button
-                type="submit"
-                // disabled={}
-                className="group relative w-full flex justify-center py-2 px-5 shadow-xl border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Log in
-              </button>
+              <Button buttonStyle="solid">Log in</Button>
             </div>
           </div>
 

@@ -5,6 +5,9 @@ import { FaSpinner } from "react-icons/fa";
 import * as yup from "yup";
 import { Formik, useFormik } from "formik";
 import Input from "../Components/Input/Input";
+import Button from "../Components/Button/Button";
+import { FiAtSign, FiLock, FiUser } from "react-icons/fi";
+import Toggle from "../Components/Toggle";
 
 interface Props {}
 
@@ -18,14 +21,16 @@ const Signup: FC<Props> = (props) => {
     errors,
   } = useFormik({
     initialValues: {
+      username: "",
       email: "",
       password: "",
     },
     validationSchema: yup.object().shape({
+      username: yup.string().required().min(3),
       email: yup.string().required().email(),
       password: yup.string().required().min(8),
     }),
-    onSubmit: (data, helpers) => {
+    onSubmit: (data) => {
       console.log("form submitting", data);
       setTimeout(() => {
         console.log("form submitted successfully");
@@ -35,22 +40,19 @@ const Signup: FC<Props> = (props) => {
   });
 
   return (
-    <div className="min-h-screen w-1/2 flex flex-col items-center font-CorkFont">
-      <div className="flex flex-col w-full max-w-md py-11.429 items-start px-45.714">
+    <div className="min-h-screen w-1/2 break:w-full flex flex-col items-center font-CorkFont">
+      <div className="flex flex-col w-full max-w-md py-11.429 items-start px-29.714">
         <div>
-          <h1 className="mb-2 text-40 text-AuthHeadColor">
-            Sign Up to{" "}
-            <a href="#">
-              <span className="text-blue-700 font-semibold">CORK</span>
-            </a>
+          <h1 className="mb-2 text-40 leading-11 text-AuthHeadColor">
+            Get Started with a free account
           </h1>
-          <p className="text-14 font-bold tracking-wide mb-12 text-AuthHeadColor">
+          <p className="text-14 font-bold tracking-wide mb-14 text-AuthHeadColor">
             Already have an account?{" "}
             <a
               href="/login"
               className=" text-blue-700 border-b border-blue-700 border-solid"
             >
-              Sign In
+              Log In
             </a>
           </p>
         </div>
@@ -63,6 +65,17 @@ const Signup: FC<Props> = (props) => {
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="mb-2">
             <Input
+              id="username"
+              type="username"
+              autoComplete="username"
+              required
+              touched={touched.username}
+              error={errors.username}
+              {...getFieldProps("username")}
+              placeholder="Username"
+              Icon={FiUser}
+            />
+            <Input
               id="email"
               type="email"
               autoComplete="email"
@@ -70,7 +83,8 @@ const Signup: FC<Props> = (props) => {
               touched={touched.email}
               error={errors.email}
               {...getFieldProps("email")}
-              placeholder="Email address"
+              placeholder="Email"
+              Icon={FiAtSign}
             />
             <Input
               id="password"
@@ -81,46 +95,34 @@ const Signup: FC<Props> = (props) => {
               error={errors.password}
               {...getFieldProps("password")}
               placeholder="Password"
+              Icon={FiLock}
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <p className=" font-semibold text-AuthHeadColor text-14 tracking-widest">
-                Show Password
-              </p>
-            </div>
-
-            <div className="text-sm">
-              <button
-                type="submit"
-                // disabled={}
-                className="group relative w-full flex justify-center py-2 px-5 shadow-xl border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Log in
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-16 flex items-center justify-center text-AuthNoteColor">
-            <label className="flex text-base cursor-pointer">
-              <input
-                type="checkbox"
-                className="mt-1 mr-4 w-4 h-4 border-b border-solid"
-              />
-              Keep me logged in
+          <div className="flex text-AuthNoteColor tracking-wide">
+            <label className="flex text-sm cursor-pointer">
+              <input type="checkbox" className="mt-1 mr-4 w-4 h-4" />I agree to
+              the t
+              <a href="#" className="text-blue-700">
+                erms and conditions
+              </a>
             </label>
           </div>
 
-          <div className="text-center mt-4">
-            <a href="#">
-              <span className="font-bold text-blue-700 tracking-widest">
-                Forgot Password?
-              </span>
-            </a>
+          <div className="flex items-center justify-between mt-4">
+            <div className="flex items-center">
+              <p className=" font-semibold text-AuthHeadColor text-14 tracking-widest mr-2">
+                Show Password
+              </p>
+              <Toggle></Toggle>
+            </div>
+
+            <div className="text-sm">
+              <Button buttonStyle="solid">Get Started!</Button>
+            </div>
           </div>
 
-          <p className="text-14 mt-24 my-auto text-AuthHeadColor font-semibold">
+          <p className="text-14 mt-20 my-auto text-AuthHeadColor font-semibold">
             © 2020 All Rights Reserved.{" "}
             <a href="#" className="text-blue-700">
               CORK
