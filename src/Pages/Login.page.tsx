@@ -1,9 +1,8 @@
-import React, { FC, memo, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { HiLockClosed, HiUser } from "react-icons/hi";
+import React, { FC, memo } from "react";
+import { useHistory } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa";
 import * as yup from "yup";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import Input from "../Components/Input/Input";
 import Button from "../Components/Button/Button";
 import { FiLock, FiUser } from "react-icons/fi";
@@ -43,7 +42,7 @@ const Login: FC<Props> = (props) => {
         <div>
           <h1 className="mb-2 text-40 text-AuthHeadColor">
             Log In to{" "}
-            <a href="#">
+            <a href="/">
               <span className="text-blue-700 font-semibold">CORK</span>
             </a>
           </h1>
@@ -113,7 +112,7 @@ const Login: FC<Props> = (props) => {
           </div>
 
           <div className="text-center mt-4">
-            <a href="#">
+            <a href="/">
               <span className="font-bold text-blue-700 tracking-widest">
                 Forgot Password?
               </span>
@@ -122,20 +121,20 @@ const Login: FC<Props> = (props) => {
 
           <p className="text-14 mt-24 my-auto text-AuthHeadColor font-semibold">
             © 2020 All Rights Reserved.{" "}
-            <a href="#" className="text-blue-700">
+            <a href="/" className="text-blue-700">
               CORK
             </a>{" "}
             is a product of Designreset.{" "}
-            <a href="#" className="text-blue-700">
+            <a href="/" className="text-blue-700">
               Cookie Preferences
             </a>
             ,{" "}
-            <a href="#" className="text-blue-700">
+            <a href="/" className="text-blue-700">
               {" "}
               Privacy
             </a>
             , and{" "}
-            <a href="#" className="text-blue-700">
+            <a href="/" className="text-blue-700">
               {" "}
               Terms
             </a>

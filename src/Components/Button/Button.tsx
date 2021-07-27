@@ -21,7 +21,7 @@
 // Button.defaultProps = {};
 // export default memo(Button);
 
-import { ButtonHTMLAttributes, useEffect } from "react";
+import { ButtonHTMLAttributes } from "react";
 import { FC, memo } from "react";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {

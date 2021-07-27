@@ -1,9 +1,8 @@
-import React, { FC, memo, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { HiLockClosed } from "react-icons/hi";
+import React, { FC, memo } from "react";
+import { useHistory } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa";
 import * as yup from "yup";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import Input from "../Components/Input/Input";
 import Button from "../Components/Button/Button";
 import { FiAtSign, FiLock, FiUser } from "react-icons/fi";
@@ -103,7 +102,7 @@ const Signup: FC<Props> = (props) => {
             <label className="flex text-sm cursor-pointer">
               <input type="checkbox" className="mt-1 mr-4 w-4 h-4" />I agree to
               the t
-              <a href="#" className="text-blue-700">
+              <a href="/" className="text-blue-700">
                 erms and conditions
               </a>
             </label>
@@ -124,20 +123,20 @@ const Signup: FC<Props> = (props) => {
 
           <p className="text-14 mt-20 my-auto text-AuthHeadColor font-semibold">
             © 2020 All Rights Reserved.{" "}
-            <a href="#" className="text-blue-700">
+            <a href="/" className="text-blue-700">
               CORK
             </a>{" "}
             is a product of Designreset.{" "}
-            <a href="#" className="text-blue-700">
+            <a href="/" className="text-blue-700">
               Cookie Preferences
             </a>
             ,{" "}
-            <a href="#" className="text-blue-700">
+            <a href="/" className="text-blue-700">
               {" "}
               Privacy
             </a>
             , and{" "}
-            <a href="#" className="text-blue-700">
+            <a href="/" className="text-blue-700">
               {" "}
               Terms
             </a>
