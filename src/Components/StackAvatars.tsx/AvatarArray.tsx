@@ -5,22 +5,32 @@ interface Props {
 }
 
 const AvatarArray: FC<Props> = ({ imageArray }) => {
+  const [displayImg, setDisplayImg] = useState(false);
   const len = imageArray.length;
-  let avatarArray = [];
-
-  if (len > 4) {
-    avatarArray = imageArray.slice(0, 4);
-  } else {
-    avatarArray = imageArray;
-  }
   return (
     <div className="-space-x-6 flex items-center">
-      {avatarArray.map((image) => (
-        <Avatars image={image}></Avatars>
-      ))}
-      {len > 4 && (
-        <button className="overflow-hidden relative inline-block cursor-pointer h-7 px-2 rounded-full bg-gray-100 text-indigo-600">
+      {len <= 4 && imageArray.map((image) => <Avatars image={image}></Avatars>)}
+      {len > 4 &&
+        imageArray
+          .slice(0, 4)
+          .map((image) => <Avatars image={image}></Avatars>)}
+      {len > 4 && !displayImg && (
+        <button
+          className="overflow-hidden relative inline-block cursor-pointer h-7 px-2 rounded-full bg-gray-100 text-indigo-600 hover:text-gray-100 hover:bg-indigo-600"
+          onClick={() => setDisplayImg(true)}
+        >
           {len - 4}+ more
+        </button>
+      )}
+      {len > 4 &&
+        displayImg &&
+        imageArray.slice(4).map((image) => <Avatars image={image}></Avatars>)}
+      {len > 4 && displayImg && (
+        <button
+          className="overflow-hidden relative inline-block cursor-pointer h-7 px-1 rounded-full bg-indigo-600 text-gray-100 pb-1 hover:bg-gray-100 hover:text-indigo-600 border border-black"
+          onClick={() => setDisplayImg(false)}
+        >
+          -X-
         </button>
       )}
     </div>
