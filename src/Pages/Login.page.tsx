@@ -7,6 +7,7 @@ import Input from "../Components/Input/Input";
 import Button from "../Components/Button/Button";
 import { FiLock, FiUser } from "react-icons/fi";
 import Toggle from "../Components/Toggle";
+import { login } from "../api";
 
 interface Props {}
 
@@ -27,12 +28,8 @@ const Login: FC<Props> = (props) => {
       email: yup.string().required().email(),
       password: yup.string().required().min(8),
     }),
-    onSubmit: (data, helpers) => {
-      console.log("form submitting", data);
-      setTimeout(() => {
-        console.log("form submitted successfully");
-        history.push("/dashboard");
-      }, 5000);
+    onSubmit: (data) => {
+      login(data);
     },
   });
 
