@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { FC, memo } from "react";
 import { Link } from "react-router-dom";
-import { fetchGroups } from "../api";
+import { fetchGroups } from "../api/group";
 
 interface Props {}
 

@@ -7,7 +7,7 @@ import Input from "../Components/Input/Input";
 import Button from "../Components/Button/Button";
 import { FiLock, FiUser } from "react-icons/fi";
 import Toggle from "../Components/Toggle";
-import { login } from "../api";
+import { login } from "../api/auth";
 
 interface Props {}
 
