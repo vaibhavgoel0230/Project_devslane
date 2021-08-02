@@ -3,14 +3,17 @@ import { FC, memo } from "react";
 import LoginPage from "./Login.page";
 import SignupPage from "./Signup.page";
 import AuthHero from "../Components/AuthHero";
+import { User } from "../modals/User";
 
-interface Props {}
+interface Props {
+  onLogin: (user: User) => void;
+}
 const AppContainer: FC<Props> = (props) => {
   return (
     <div className="flex flex-row justify-between">
       <Switch>
         <Route path="/login">
-          <LoginPage></LoginPage>
+          <LoginPage onLogin={props.onLogin}></LoginPage>
         </Route>
         <Route path="/signup">
           <SignupPage></SignupPage>

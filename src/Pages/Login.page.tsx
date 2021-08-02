@@ -8,8 +8,11 @@ import Button from "../Components/Button/Button";
 import { FiLock, FiUser } from "react-icons/fi";
 import Toggle from "../Components/Toggle";
 import { login } from "../api/auth";
+import { User } from "../modals/User";
 
-interface Props {}
+interface Props {
+  onLogin: (user: User) => void;
+}
 
 const Login: FC<Props> = (props) => {
   const history = useHistory();
@@ -29,7 +32,8 @@ const Login: FC<Props> = (props) => {
       password: yup.string().required().min(8),
     }),
     onSubmit: (data) => {
-      login(data).then(() => {
+      login(data).then((u) => {
+        props.onLogin(u);
         history.push("/dashboard");
       });
     },

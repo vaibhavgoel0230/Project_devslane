@@ -1,22 +1,51 @@
-import React from "react";
+import React, { Suspense, useEffect } from "react";
+import { useState } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { me } from "./api/auth";
 import { LS_AUTH_TOKEN } from "./api/base";
-import AppContainerPage from "./Pages/AppContainer.page";
-import AuthPage from "./Pages/Auth.page";
+import { User } from "./modals/User";
 import NotFoundPage from "./Pages/NotFound.page";
+
+const AppContainerPageLazy = React.lazy(
+  () => import("./Pages/AppContainer.page")
+);
+const AuthPageLazy = React.lazy(() => import("./Pages/Auth.page"));
 
 interface Props {}
 
 const App: React.FC<Props> = (props) => {
+  const [user, setUser] = useState<User>();
   const token = localStorage.getItem(LS_AUTH_TOKEN);
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+    me().then((u) => setUser(u));
+  }, []);
+
+  if (!user && token) {
+    return <div>loading...</div>;
+  }
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/" exact>
-          {token ? <Redirect to="/dashboard" /> : <Redirect to="/login" />}
+          {user ? <Redirect to="/dashboard" /> : <Redirect to="/login" />}
         </Route>
         <Route path={["/login", "/signup"]} exact>
-          {token ? <Redirect to="/dashboard" /> : <AuthPage />}
+          {user ? (
+            <Redirect to="/dashboard" />
+          ) : (
+            <Suspense
+              fallback={
+                <div className="text-indigo-600 text-3xl p-4 m-auto">
+                  Content is Loading
+                </div>
+              }
+            >
+              <AuthPageLazy onLogin={setUser} />
+            </Suspense>
+          )}
         </Route>
         <Route
           path={[
@@ -26,7 +55,15 @@ const App: React.FC<Props> = (props) => {
           ]}
           exact
         >
-          {token ? <AppContainerPage /> : <Redirect to="/login" />}
+          <Suspense
+            fallback={
+              <div className="text-indigo-600 text-3xl w-full p-4 m-auto">
+                Content is Loading
+              </div>
+            }
+          >
+            {user ? <AppContainerPageLazy /> : <Redirect to="/login" />}
+          </Suspense>
         </Route>
         <Route>
           <NotFoundPage></NotFoundPage>
