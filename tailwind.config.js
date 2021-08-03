@@ -59,6 +59,7 @@ module.exports = {
       inset: {
         0: "0px",
         15: "60px",
+        3.5: "18px",
       },
       screens: {
         break: { max: "980px" },
