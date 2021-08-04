@@ -60,6 +60,7 @@ module.exports = {
         0: "0px",
         15: "60px",
         3.5: "18px",
+        26: "102px",
       },
       screens: {
         break: { max: "980px" },

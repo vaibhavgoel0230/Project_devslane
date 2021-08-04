@@ -6,15 +6,18 @@ interface Props {}
 const Sidebar: FC<Props> = (props) => {
   return (
     <div>
-      <div className="h-screen bg-gray-400 w-80">This is sidebar</div>
-      <Button
-        onClick={() => {
-          logout();
-          window.location.href = "/login";
-        }}
-      >
-        Logout
-      </Button>
+      <div className="h-full bg-gray-200 w-56 border-r border-gray-400 overflow-scroll fixed top-26 py-3 px-2 ">
+        <Button
+          theme="Dark"
+          className="w-full"
+          onClick={() => {
+            logout();
+            window.location.href = "/login";
+          }}
+        >
+          Logout
+        </Button>
+      </div>
     </div>
   );
 };
