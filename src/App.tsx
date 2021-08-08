@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useMemo } from "react";
 import { useState } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { me } from "./api/auth";
@@ -24,11 +24,15 @@ const App: React.FC<Props> = (props) => {
     me().then((u) => setUser(u));
   }, []); // eslint-disable-line
 
+  const data = useMemo(() => {
+    return { user, setUser };
+  }, [user, setUser]);
+
   if (!user && token) {
     return <div>loading...</div>;
   }
   return (
-    <AppContext.Provider value={{ user, setUser }}>
+    <AppContext.Provider value={data}>
       <BrowserRouter>
         <Switch>
           <Route path="/" exact>
