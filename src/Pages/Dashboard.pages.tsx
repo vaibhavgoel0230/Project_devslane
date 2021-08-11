@@ -8,20 +8,34 @@ import Input from "../Components/Input/Input";
 import { Group } from "../modals/Group";
 import altImage from "../Components/Avatar/media/photo-1532074205216-d0e1f4b87368.jpg";
 import { Img } from "react-image";
+import { GROUP_QUERY, GROUP_QUERY_RESULT, useAppSelector } from "../store";
+import { useDispatch } from "react-redux";
 
 interface Props {}
 
 const Dashboard: FC<Props> = (props) => {
-  const [query, setQuery] = useState("");
-  const [groups, setGroups] = useState<Group[]>();
+  const query = useAppSelector((state) => state.groupQuery);
+  const groups = useAppSelector((state) => {
+    const groupIds = state.groupQueryIds[state.groupQuery] || [];
+    const finalGroups = groupIds.map((id) => state.groups[id]);
+    return finalGroups;
+  });
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    fetchGroups({ status: "all-groups", query }).then((u) => setGroups(u));
+    fetchGroups({ status: "all-groups", query }).then((groups) => {
+      dispatch({
+        type: GROUP_QUERY_RESULT,
+        payload: { groups: groups, query },
+      });
+    });
     // console.log(groups);
   }, [query]);
   let a = 0;
 
   const submit = (e: any) => {
-    setQuery(e.target[0].value);
+    dispatch({ type: GROUP_QUERY, payload: e.target[0].value });
     e.preventDefault();
   };
   return (
@@ -37,7 +51,7 @@ const Dashboard: FC<Props> = (props) => {
           Icon={FiSearch}
           theme="dark"
           onChange={(e) => {
-            setQuery(e.target.value);
+            dispatch({ type: GROUP_QUERY, payload: e.target.value });
           }}
         ></Input>
         <form onSubmit={submit} className="flex items-center">
@@ -56,7 +70,7 @@ const Dashboard: FC<Props> = (props) => {
         </form>
       </div>
       <div className=" w-full bg-white rounded-lg px-4 py-5">
-        {groups?.map(function (i) {
+        {groups.map(function (i) {
           a += 1;
           return a % 2 === 1 ? (
             <div

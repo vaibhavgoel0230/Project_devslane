@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import { FC, memo } from "react";
 import { useHistory } from "react-router-dom";
 import { FaSpinner } from "react-icons/fa";
 import * as yup from "yup";
@@ -8,13 +8,13 @@ import Button from "../Components/Button/Button";
 import { FiLock, FiUser } from "react-icons/fi";
 import Toggle from "../Components/Toggle";
 import { login } from "../api/auth";
-import { User } from "../modals/User";
+import { useDispatch } from "react-redux";
+import { ME_LOGIN } from "../store";
 
-interface Props {
-  onLogin: (user: User) => void;
-}
+interface Props {}
 
 const Login: FC<Props> = (props) => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const {
     handleSubmit,
@@ -33,7 +33,7 @@ const Login: FC<Props> = (props) => {
     }),
     onSubmit: (data) => {
       login(data).then((u) => {
-        props.onLogin(u);
+        dispatch({ type: ME_LOGIN, payload: u });
         history.push("/dashboard");
       });
     },

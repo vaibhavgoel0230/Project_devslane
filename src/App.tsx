@@ -1,11 +1,11 @@
-import React, { Suspense, useEffect, useMemo } from "react";
-import { useState } from "react";
+import React, { Suspense, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { me } from "./api/auth";
 import { LS_AUTH_TOKEN } from "./api/base";
-import AppContext from "./App.context";
 import { User } from "./modals/User";
 import NotFoundPage from "./Pages/NotFound.page";
+import { meFetchedAction, useAppSelector } from "./store";
 
 const AppContainerPageLazy = React.lazy(
   () => import("./Pages/AppContainer.page")
@@ -15,24 +15,21 @@ const AuthPageLazy = React.lazy(() => import("./Pages/Auth.page"));
 interface Props {}
 
 const App: React.FC<Props> = (props) => {
-  const [user, setUser] = useState<User>();
+  const user = useAppSelector((state) => state.me);
+  const dispatch = useDispatch();
   const token = localStorage.getItem(LS_AUTH_TOKEN);
   useEffect(() => {
     if (!token) {
       return;
     }
-    me().then((u) => setUser(u));
+    me().then((u) => dispatch(meFetchedAction(u)));
   }, []); // eslint-disable-line
-
-  const data = useMemo(() => {
-    return { user, setUser };
-  }, [user, setUser]);
 
   if (!user && token) {
     return <div>loading...</div>;
   }
   return (
-    <AppContext.Provider value={data}>
+    <>
       <BrowserRouter>
         <Switch>
           <Route path="/" exact>
@@ -49,7 +46,7 @@ const App: React.FC<Props> = (props) => {
                   </div>
                 }
               >
-                <AuthPageLazy onLogin={setUser} />
+                <AuthPageLazy />
               </Suspense>
             )}
           </Route>
@@ -76,8 +73,11 @@ const App: React.FC<Props> = (props) => {
           </Route>
         </Switch>
       </BrowserRouter>
-    </AppContext.Provider>
+    </>
   );
 };
 
 export default App;
+function meFetchAction(u: User): any {
+  throw new Error("Function not implemented.");
+}
