@@ -1,23 +1,22 @@
 import { useEffect } from "react";
-import { useState } from "react";
 import { FC, memo } from "react";
 import { FiSearch } from "react-icons/fi";
 import { fetchGroups } from "../api/group";
 import Button from "../Components/Button/Button";
 import Input from "../Components/Input/Input";
-import { Group } from "../modals/Group";
 import altImage from "../Components/Avatar/media/photo-1532074205216-d0e1f4b87368.jpg";
 import { Img } from "react-image";
-import { GROUP_QUERY, GROUP_QUERY_RESULT, useAppSelector } from "../store";
+import { useAppSelector } from "../store";
+import { GROUP_QUERY, GROUP_QUERY_RESULT } from "../actions/groups.actions";
 import { useDispatch } from "react-redux";
 
 interface Props {}
 
-const Dashboard: FC<Props> = (props) => {
-  const query = useAppSelector((state) => state.groupQuery);
+const Dashboard: FC<Props> = () => {
+  const query = useAppSelector((state) => state.groups.query);
   const groups = useAppSelector((state) => {
-    const groupIds = state.groupQueryIds[state.groupQuery] || [];
-    const finalGroups = groupIds.map((id) => state.groups[id]);
+    const groupIds = state.groups.queryMap[state.groups.query] || [];
+    const finalGroups = groupIds.map((id) => state.groups.byId[id]);
     return finalGroups;
   });
 

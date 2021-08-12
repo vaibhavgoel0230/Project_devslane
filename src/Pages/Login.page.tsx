@@ -9,7 +9,7 @@ import { FiLock, FiUser } from "react-icons/fi";
 import Toggle from "../Components/Toggle";
 import { login } from "../api/auth";
 import { useDispatch } from "react-redux";
-import { ME_LOGIN } from "../store";
+import { meLoginAction } from "../actions/auth.actions";
 
 interface Props {}
 
@@ -33,7 +33,7 @@ const Login: FC<Props> = (props) => {
     }),
     onSubmit: (data) => {
       login(data).then((u) => {
-        dispatch({ type: ME_LOGIN, payload: u });
+        dispatch(meLoginAction(u));
         history.push("/dashboard");
       });
     },
