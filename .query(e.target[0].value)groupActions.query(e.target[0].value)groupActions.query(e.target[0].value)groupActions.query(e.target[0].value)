@@ -1,0 +1,175 @@
+warning: LF will be replaced by CRLF in src/App.tsx.
+The file will have its original line endings in your working directory
+[1mdiff --git a/src/App.tsx b/src/App.tsx[m
+[1mindex d726654..996293d 100644[m
+[1m--- a/src/App.tsx[m
+[1m+++ b/src/App.tsx[m
+[36m@@ -1,7 +1,6 @@[m
+ import React, { Suspense, useEffect } from "react";[m
+[31m-import { useDispatch } from "react-redux";[m
+ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";[m
+[31m-import { meFetchedAction } from "./actions/auth.actions";[m
+[32m+[m[32mimport { authActions } from "./actions/auth.actions";[m
+ import { me } from "./api/auth";[m
+ import { LS_AUTH_TOKEN } from "./api/base";[m
+ import { User } from "./modals/User";[m
+[36m@@ -19,13 +18,12 @@[m [mconst App: React.FC<Props> = (props) => {[m
+   const user = useAppSelector([m
+     (state) => state.auth.id && state.users.byId[state.auth.id][m
+   );[m
+[31m-  const dispatch = useDispatch();[m
+   const token = localStorage.getItem(LS_AUTH_TOKEN);[m
+   useEffect(() => {[m
+     if (!token) {[m
+       return;[m
+     }[m
+[31m-    me().then((u) => dispatch(meFetchedAction(u)));[m
+[32m+[m[32m    me().then((u) => authActions.fetch(u));[m
+   }, []); // eslint-disable-line[m
+ [m
+   if (!user && token) {[m
+[1mdiff --git a/src/Pages/Dashboard.pages.tsx b/src/Pages/Dashboard.pages.tsx[m
+[1mindex 9074965..a61ead7 100644[m
+[1m--- a/src/Pages/Dashboard.pages.tsx[m
+[1m+++ b/src/Pages/Dashboard.pages.tsx[m
+[36m@@ -7,8 +7,7 @@[m [mimport Input from "../Components/Input/Input";[m
+ import altImage from "../Components/Avatar/media/photo-1532074205216-d0e1f4b87368.jpg";[m
+ import { Img } from "react-image";[m
+ import { useAppSelector } from "../store";[m
+[31m-import { GROUP_QUERY, GROUP_QUERY_RESULT } from "../actions/groups.actions";[m
+[31m-import { useDispatch } from "react-redux";[m
+[32m+[m[32mimport { groupActions } from "../actions/groups.actions";[m
+ [m
+ interface Props {}[m
+ [m
+[36m@@ -20,21 +19,16 @@[m [mconst Dashboard: FC<Props> = () => {[m
+     return finalGroups;[m
+   });[m
+ [m
+[31m-  const dispatch = useDispatch();[m
+[31m-[m
+   useEffect(() => {[m
+     fetchGroups({ status: "all-groups", query }).then((groups) => {[m
+[31m-      dispatch({[m
+[31m-        type: GROUP_QUERY_RESULT,[m
+[31m-        payload: { groups: groups, query },[m
+[31m-      });[m
+[32m+[m[32m      groupActions.queryExecuted(groups, query);[m
+     });[m
+     // console.log(groups);[m
+   }, [query]);[m
+   let a = 0;[m
+ [m
+   const submit = (e: any) => {[m
+[31m-    dispatch({ type: GROUP_QUERY, payload: e.target[0].value });[m
+[32m+[m[32m    groupActions.query(e.target[0].value);[m
+     e.preventDefault();[m
+   };[m
+   return ([m
+[36m@@ -50,7 +44,7 @@[m [mconst Dashboard: FC<Props> = () => {[m
+           Icon={FiSearch}[m
+           theme="dark"[m
+           onChange={(e) => {[m
+[31m-            dispatch({ type: GROUP_QUERY, payload: e.target.value });[m
+[32m+[m[32m            groupActions.query(e.target.value);[m
+           }}[m
+         ></Input>[m
+         <form onSubmit={submit} className="flex items-center">[m
+[1mdiff --git a/src/Pages/Login.page.tsx b/src/Pages/Login.page.tsx[m
+[1mindex 517c333..039b92d 100644[m
+[1m--- a/src/Pages/Login.page.tsx[m
+[1m+++ b/src/Pages/Login.page.tsx[m
+[36m@@ -8,13 +8,11 @@[m [mimport Button from "../Components/Button/Button";[m
+ import { FiLock, FiUser } from "react-icons/fi";[m
+ import Toggle from "../Components/Toggle";[m
+ import { login } from "../api/auth";[m
+[31m-import { useDispatch } from "react-redux";[m
+[31m-import { meLoginAction } from "../actions/auth.actions";[m
+[32m+[m[32mimport { authActions } from "../actions/auth.actions";[m
+ [m
+ interface Props {}[m
+ [m
+ const Login: FC<Props> = (props) => {[m
+[31m-  const dispatch = useDispatch();[m
+   const history = useHistory();[m
+   const {[m
+     handleSubmit,[m
+[36m@@ -33,7 +31,7 @@[m [mconst Login: FC<Props> = (props) => {[m
+     }),[m
+     onSubmit: (data) => {[m
+       login(data).then((u) => {[m
+[31m-        dispatch(meLoginAction(u));[m
+[32m+[m[32m        authActions.login(u);[m
+         history.push("/dashboard");[m
+       });[m
+     },[m
+[1mdiff --git a/src/actions/auth.actions.ts b/src/actions/auth.actions.ts[m
+[1mindex 8b343fc..2608838 100644[m
+[1m--- a/src/actions/auth.actions.ts[m
+[1m+++ b/src/actions/auth.actions.ts[m
+[36m@@ -1,14 +1,22 @@[m
+[32m+[m[32mimport { bindActionCreators } from "redux";[m
+ import { User } from "../modals/User";[m
+[32m+[m[32mimport { store } from "../store";[m
+[32m+[m[32mimport { ME_FETCH, ME_LOGIN } from "./actions.constants";[m
+ [m
+[31m-export const ME_FETCH = "me/fetch";[m
+[31m-export const ME_LOGIN = "me/login";[m
+[31m-[m
+[31m-export const meFetchedAction = (u: User) => ({[m
+[32m+[m[32mconst meFetchedAction = (u: User) => ({[m
+   type: ME_FETCH,[m
+   payload: u,[m
+ });[m
+ [m
+[31m-export const meLoginAction = (u: User) => ({[m
+[32m+[m[32mconst meLoginAction = (u: User) => ({[m
+   type: ME_LOGIN,[m
+   payload: u,[m
+ });[m
+[32m+[m
+[32m+[m[32mexport const authActions = bindActionCreators([m
+[32m+[m[32m  {[m
+[32m+[m[32m    fetch: meFetchedAction,[m
+[32m+[m[32m    login: meLoginAction,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  store.dispatch[m
+[32m+[m[32m);[m
+[1mdiff --git a/src/actions/groups.actions.ts b/src/actions/groups.actions.ts[m
+[1mindex fd092c3..98f8693 100644[m
+[1m--- a/src/actions/groups.actions.ts[m
+[1m+++ b/src/actions/groups.actions.ts[m
+[36m@@ -1,7 +1,7 @@[m
+[32m+[m[32mimport { bindActionCreators } from "redux";[m
+ import { Group } from "../modals/Group";[m
+[31m-[m
+[31m-export const GROUP_QUERY = "groups/query";[m
+[31m-export const GROUP_QUERY_RESULT = "groups/query_executed";[m
+[32m+[m[32mimport { store } from "../store";[m
+[32m+[m[32mimport { GROUP_QUERY, GROUP_QUERY_RESULT } from "./actions.constants";[m
+ [m
+ export const fetchQuery = (query: string) => ({[m
+   type: GROUP_QUERY,[m
+[36m@@ -12,3 +12,11 @@[m [mexport const fetchedQueryExecuted = (groups: Group[], query: string) => ({[m
+   type: GROUP_QUERY_RESULT,[m
+   payload: { groups, query },[m
+ });[m
+[32m+[m
+[32m+[m[32mexport const groupActions = bindActionCreators([m
+[32m+[m[32m  {[m
+[32m+[m[32m    query: fetchQuery,[m
+[32m+[m[32m    queryExecuted: fetchedQueryExecuted,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  store.dispatch[m
+[32m+[m[32m);[m
+[1mdiff --git a/src/reducers/users.reducer.ts b/src/reducers/users.reducer.ts[m
+[1mindex e06828c..edcf587 100644[m
+[1m--- a/src/reducers/users.reducer.ts[m
+[1m+++ b/src/reducers/users.reducer.ts[m
+[36m@@ -1,5 +1,5 @@[m
+ import { Reducer } from "redux";[m
+[31m-import { ME_FETCH, ME_LOGIN } from "../actions/auth.actions";[m
+[32m+[m[32mimport { ME_FETCH, ME_LOGIN } from "../actions/actions.constants";[m
+ import { User } from "../modals/User";[m
+ [m
+ export interface UserState {[m

@@ -7,8 +7,7 @@ import Input from "../Components/Input/Input";
 import altImage from "../Components/Avatar/media/photo-1532074205216-d0e1f4b87368.jpg";
 import { Img } from "react-image";
 import { useAppSelector } from "../store";
-import { GROUP_QUERY, GROUP_QUERY_RESULT } from "../actions/groups.actions";
-import { useDispatch } from "react-redux";
+import { groupActions } from "../actions/groups.actions";
 
 interface Props {}
 
@@ -20,21 +19,16 @@ const Dashboard: FC<Props> = () => {
     return finalGroups;
   });
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     fetchGroups({ status: "all-groups", query }).then((groups) => {
-      dispatch({
-        type: GROUP_QUERY_RESULT,
-        payload: { groups: groups, query },
-      });
+      groupActions.queryExecuted(groups, query);
     });
     // console.log(groups);
   }, [query]);
   let a = 0;
 
   const submit = (e: any) => {
-    dispatch({ type: GROUP_QUERY, payload: e.target[0].value });
+    groupActions.query(e.target[0].value);
     e.preventDefault();
   };
   return (
@@ -50,7 +44,7 @@ const Dashboard: FC<Props> = () => {
           Icon={FiSearch}
           theme="dark"
           onChange={(e) => {
-            dispatch({ type: GROUP_QUERY, payload: e.target.value });
+            groupActions.query(e.target.value);
           }}
         ></Input>
         <form onSubmit={submit} className="flex items-center">

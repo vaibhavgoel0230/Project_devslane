@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { meFetchedAction } from "./actions/auth.actions";
+import { authActions } from "./actions/auth.actions";
 import { me } from "./api/auth";
 import { LS_AUTH_TOKEN } from "./api/base";
 import { User } from "./modals/User";
@@ -19,13 +18,12 @@ const App: React.FC<Props> = (props) => {
   const user = useAppSelector(
     (state) => state.auth.id && state.users.byId[state.auth.id]
   );
-  const dispatch = useDispatch();
   const token = localStorage.getItem(LS_AUTH_TOKEN);
   useEffect(() => {
     if (!token) {
       return;
     }
-    me().then((u) => dispatch(meFetchedAction(u)));
+    me().then((u) => authActions.fetch(u));
   }, []); // eslint-disable-line
 
   if (!user && token) {

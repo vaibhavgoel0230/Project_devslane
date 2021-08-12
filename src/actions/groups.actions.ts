@@ -1,7 +1,7 @@
+import { bindActionCreators } from "redux";
 import { Group } from "../modals/Group";
-
-export const GROUP_QUERY = "groups/query";
-export const GROUP_QUERY_RESULT = "groups/query_executed";
+import { store } from "../store";
+import { GROUP_QUERY, GROUP_QUERY_RESULT } from "./actions.constants";
 
 export const fetchQuery = (query: string) => ({
   type: GROUP_QUERY,
@@ -12,3 +12,11 @@ export const fetchedQueryExecuted = (groups: Group[], query: string) => ({
   type: GROUP_QUERY_RESULT,
   payload: { groups, query },
 });
+
+export const groupActions = bindActionCreators(
+  {
+    query: fetchQuery,
+    queryExecuted: fetchedQueryExecuted,
+  },
+  store.dispatch
+);
