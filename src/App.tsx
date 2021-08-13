@@ -5,6 +5,7 @@ import { me } from "./api/auth";
 import { LS_AUTH_TOKEN } from "./api/base";
 import { User } from "./modals/User";
 import NotFoundPage from "./Pages/NotFound.page";
+import { meSelector } from "./selectors/auth.selectors";
 import { useAppSelector } from "./store";
 
 const AppContainerPageLazy = React.lazy(
@@ -15,9 +16,7 @@ const AuthPageLazy = React.lazy(() => import("./Pages/Auth.page"));
 interface Props {}
 
 const App: React.FC<Props> = (props) => {
-  const user = useAppSelector(
-    (state) => state.auth.id && state.users.byId[state.auth.id]
-  );
+  const user = useAppSelector(meSelector);
   const token = localStorage.getItem(LS_AUTH_TOKEN);
   useEffect(() => {
     if (!token) {

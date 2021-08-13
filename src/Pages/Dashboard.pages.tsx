@@ -8,16 +8,16 @@ import altImage from "../Components/Avatar/media/photo-1532074205216-d0e1f4b8736
 import { Img } from "react-image";
 import { useAppSelector } from "../store";
 import { groupActions } from "../actions/groups.actions";
+import {
+  groupQuerySelector,
+  groupsSelector,
+} from "../selectors/groups.selectors";
 
 interface Props {}
 
 const Dashboard: FC<Props> = () => {
-  const query = useAppSelector((state) => state.groups.query);
-  const groups = useAppSelector((state) => {
-    const groupIds = state.groups.queryMap[state.groups.query] || [];
-    const finalGroups = groupIds.map((id) => state.groups.byId[id]);
-    return finalGroups;
-  });
+  const query = useAppSelector(groupQuerySelector);
+  const groups = useAppSelector(groupsSelector);
 
   useEffect(() => {
     fetchGroups({ status: "all-groups", query }).then((groups) => {
