@@ -1,4 +1,3 @@
-import { AppState } from "../store";
 import { groupStateSelector } from "./app.selectors";
 import { createSelector } from "reselect";
 

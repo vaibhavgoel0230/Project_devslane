@@ -3,7 +3,6 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { authActions } from "./actions/auth.actions";
 import { me } from "./api/auth";
 import { LS_AUTH_TOKEN } from "./api/base";
-import { User } from "./modals/User";
 import NotFoundPage from "./Pages/NotFound.page";
 import { meSelector } from "./selectors/auth.selectors";
 import { useAppSelector } from "./store";
@@ -78,6 +77,3 @@ const App: React.FC<Props> = (props) => {
 };
 
 export default App;
-function meFetchAction(u: User): any {
-  throw new Error("Function not implemented.");
-}
