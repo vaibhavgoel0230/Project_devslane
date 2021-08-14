@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { authActions } from "./actions/auth.actions";
-import { me } from "./api/auth";
+import { me } from "./middlewares/auth.middleware";
 import { LS_AUTH_TOKEN } from "./api/base";
 import NotFoundPage from "./Pages/NotFound.page";
 import { meSelector } from "./selectors/auth.selectors";
@@ -21,7 +20,8 @@ const App: React.FC<Props> = (props) => {
     if (!token) {
       return;
     }
-    me().then((u) => authActions.fetch(u));
+
+    me();
   }, []); // eslint-disable-line
 
   if (!user && token) {

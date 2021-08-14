@@ -3,9 +3,9 @@ import { Group } from "../modals/Group";
 import { store } from "../store";
 import { GROUP_QUERY, GROUP_QUERY_RESULT } from "./actions.constants";
 
-export const fetchQuery = (query: string) => ({
+export const fetchQuery = (query: string, loading: boolean) => ({
   type: GROUP_QUERY,
-  payload: query,
+  payload: { query, loading },
 });
 
 export const fetchedQueryExecuted = (groups: Group[], query: string) => ({

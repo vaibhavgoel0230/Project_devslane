@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { FC, memo } from "react";
 import { FiSearch } from "react-icons/fi";
-import { fetchGroups } from "../api/group";
+import { fetchGroups } from "../middlewares/groups.middleware";
 import Button from "../Components/Button/Button";
 import Input from "../Components/Input/Input";
 import altImage from "../Components/Avatar/media/photo-1532074205216-d0e1f4b87368.jpg";
@@ -9,26 +8,23 @@ import { Img } from "react-image";
 import { useAppSelector } from "../store";
 import { groupActions } from "../actions/groups.actions";
 import {
+  groupLoadingSelector,
   groupQuerySelector,
   groupsSelector,
 } from "../selectors/groups.selectors";
+import { FaSpinner } from "react-icons/fa";
 
 interface Props {}
 
 const Dashboard: FC<Props> = () => {
   const query = useAppSelector(groupQuerySelector);
+  const loading = useAppSelector(groupLoadingSelector);
   const groups = useAppSelector(groupsSelector);
 
-  useEffect(() => {
-    fetchGroups({ status: "all-groups", query }).then((groups) => {
-      groupActions.queryExecuted(groups, query);
-    });
-    // console.log(groups);
-  }, [query]);
   let a = 0;
 
   const submit = (e: any) => {
-    groupActions.query(e.target[0].value);
+    fetchGroups({ query: e.target[0].value, status: "all-groups" });
     e.preventDefault();
   };
   return (
@@ -44,7 +40,7 @@ const Dashboard: FC<Props> = () => {
           Icon={FiSearch}
           theme="dark"
           onChange={(e) => {
-            groupActions.query(e.target.value);
+            fetchGroups({ query: e.target.value, status: "all-groups" });
           }}
         ></Input>
         <form onSubmit={submit} className="flex items-center">
@@ -61,6 +57,9 @@ const Dashboard: FC<Props> = () => {
           ></Input>
           <Button theme="Dark">Submit</Button>
         </form>
+      </div>
+      <div className="flex justify-center my-4 h-3">
+        {loading && <FaSpinner className="animate-spin"></FaSpinner>}
       </div>
       <div className=" w-full bg-white rounded-lg px-4 py-5">
         {groups.map(function (i) {
