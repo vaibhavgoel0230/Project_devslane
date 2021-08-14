@@ -13,7 +13,7 @@ axios.interceptors.request.use((config) => {
 });
 
 axios.interceptors.request.use(undefined, (error) => {
-  if (error.response.data.code === 9101) {
+  if (error.response?.data?.code === 9101) {
     localStorage.removeItem(LS_AUTH_TOKEN);
     window.location.href = "/login";
   }

@@ -6,14 +6,14 @@ import { addMany, EntityState, getIds } from "./entity.reducer";
 export interface GroupState extends EntityState<Group> {
   query: string;
   queryMap: { [query: string]: number[] };
-  loadingQuery: { [query: string]: boolean };
+  loading: boolean;
 }
 
 const initialState = {
   byId: {},
   query: "",
   queryMap: {},
-  loadingQuery: {},
+  loading: false,
 };
 
 export const groupReducer: Reducer<GroupState> = (
@@ -25,15 +25,12 @@ export const groupReducer: Reducer<GroupState> = (
       return {
         ...state,
         query: action.payload,
-        loadingQuery: {
-          ...state.loadingQuery,
-          [action.payload]: true,
-        },
+        loading: true,
       };
     case GROUP_QUERY_RESULT:
       const groups = action.payload.groups as Group[];
       const groupIds = getIds(groups);
-
+      // console.log(groupIds);
       const newState = addMany<GroupState>(state, groups);
 
       return {
@@ -42,10 +39,7 @@ export const groupReducer: Reducer<GroupState> = (
           ...newState.queryMap,
           [action.payload.query]: groupIds,
         },
-        loadingQuery: {
-          ...newState.loadingQuery,
-          [action.payload.query]: false,
-        },
+        loading: false,
       };
     default:
       return state;

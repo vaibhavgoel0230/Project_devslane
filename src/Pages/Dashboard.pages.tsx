@@ -8,7 +8,6 @@ import { Img } from "react-image";
 import { useAppSelector } from "../store";
 import {
   groupLoadingSelector,
-  groupQuerySelector,
   groupsSelector,
 } from "../selectors/groups.selectors";
 import { FaSpinner } from "react-icons/fa";
