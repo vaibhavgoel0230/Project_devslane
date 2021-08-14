@@ -6,7 +6,6 @@ import Input from "../Components/Input/Input";
 import altImage from "../Components/Avatar/media/photo-1532074205216-d0e1f4b87368.jpg";
 import { Img } from "react-image";
 import { useAppSelector } from "../store";
-import { groupActions } from "../actions/groups.actions";
 import {
   groupLoadingSelector,
   groupQuerySelector,
@@ -17,7 +16,6 @@ import { FaSpinner } from "react-icons/fa";
 interface Props {}
 
 const Dashboard: FC<Props> = () => {
-  const query = useAppSelector(groupQuerySelector);
   const loading = useAppSelector(groupLoadingSelector);
   const groups = useAppSelector(groupsSelector);
 
@@ -61,50 +59,62 @@ const Dashboard: FC<Props> = () => {
       <div className="flex justify-center my-4 h-3">
         {loading && <FaSpinner className="animate-spin"></FaSpinner>}
       </div>
-      <div className=" w-full bg-white rounded-lg px-4 py-5">
-        {groups.map(function (i) {
-          a += 1;
-          return a % 2 === 1 ? (
-            <div
-              key={i.id}
-              className={
-                "w-full rounded-lg bg-gray-500 text-white mt-4 flex p-2 "
-              }
-            >
-              <div>
-                <Img
-                  src={[i.group_image_url, altImage]}
-                  alt="Not Found"
-                  className="h-20 w-20 rounded-md"
-                />
+      {!loading && groups.length > 0 && (
+        <div className=" w-full bg-white rounded-lg px-4 py-5">
+          {groups.map(function (i) {
+            a += 1;
+            return a % 2 === 1 ? (
+              <div
+                key={i.id}
+                className={
+                  "w-full rounded-lg bg-gray-500 text-white mt-4 flex p-2 "
+                }
+              >
+                <div>
+                  <Img
+                    src={[i.group_image_url, altImage]}
+                    alt="Not Found"
+                    className="h-20 w-20 rounded-md"
+                  />
+                </div>
+                <div className="ml-2">
+                  <div className="capitalize">{`Name: ${i.name}`}</div>
+                  <div className="capitalize">{`Description: ${i.description}`}</div>
+                </div>
               </div>
-              <div className="ml-2">
-                <div className="capitalize">{`Name: ${i.name}`}</div>
-                <div className="capitalize">{`Description: ${i.description}`}</div>
+            ) : (
+              <div
+                key={i.id}
+                className={
+                  "w-full rounded-lg bg-gray-100 text-gray-600 mt-4 flex justify-between p-2"
+                }
+              >
+                <div className="ml-24">
+                  <div className="capitalize">{`Name: ${i.name}`}</div>
+                  <div className="capitalize">{`Description: ${i.description}`}</div>
+                </div>
+                <div>
+                  <Img
+                    src={[i.group_image_url, altImage]}
+                    alt="Not Found"
+                    className="h-20 w-20 rounded-md"
+                  />
+                </div>
               </div>
-            </div>
-          ) : (
-            <div
-              key={i.id}
-              className={
-                "w-full rounded-lg bg-gray-100 text-gray-600 mt-4 flex justify-between p-2"
-              }
-            >
-              <div className="ml-24">
-                <div className="capitalize">{`Name: ${i.name}`}</div>
-                <div className="capitalize">{`Description: ${i.description}`}</div>
-              </div>
-              <div>
-                <Img
-                  src={[i.group_image_url, altImage]}
-                  alt="Not Found"
-                  className="h-20 w-20 rounded-md"
-                />
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
+
+      {!loading && groups.length === 0 && (
+        <div
+          className={
+            "w-full rounded-lg bg-gray-100 text-gray-600 flex justify-center p-2"
+          }
+        >
+          NO GROUPS FOUND
+        </div>
+      )}
 
       {/* <Link to="/recordings">
         <span className="text-blue-500">Go to Recordings.</span>

@@ -16,7 +16,7 @@ const groupQueryIdSelector = createSelector(
   (groupState) => groupState.byId
 );
 
-const groupLoadingQuerySelector = createSelector(
+export const groupLoadingQuerySelector = createSelector(
   [groupStateSelector],
   (groupState) => groupState.loadingQuery
 );
