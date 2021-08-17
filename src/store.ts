@@ -1,8 +1,11 @@
 import { TypedUseSelectorHook, useSelector } from "react-redux";
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 import { authReducer } from "./reducers/auth.reducer";
 import { groupReducer } from "./reducers/groups.reducer";
 import { userReducer } from "./reducers/users.reducer";
+import { sagaMiddleware } from "./sagas";
+import { watchGroupQueryChanged } from "./sagas/groups.sagas";
 
 // by default, INIT action is automatically dispatched for the first time when state is undefined.
 const reducer = combineReducers({
@@ -13,8 +16,10 @@ const reducer = combineReducers({
 
 export const store = createStore(
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
+sagaMiddleware.run(watchGroupQueryChanged);
 
 export type AppState = ReturnType<typeof reducer>;
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;

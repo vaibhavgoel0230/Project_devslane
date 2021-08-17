@@ -1,6 +1,5 @@
 import { FC, memo } from "react";
 import { FiSearch } from "react-icons/fi";
-import { fetchGroups } from "../middlewares/groups.middleware";
 import Button from "../Components/Button/Button";
 import Input from "../Components/Input/Input";
 import altImage from "../Components/Avatar/media/photo-1532074205216-d0e1f4b87368.jpg";
@@ -8,20 +7,25 @@ import { Img } from "react-image";
 import { useAppSelector } from "../store";
 import {
   groupLoadingSelector,
+  groupQuerySelector,
   groupsSelector,
 } from "../selectors/groups.selectors";
 import { FaSpinner } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { fetchQuery } from "../actions/groups.actions";
 
 interface Props {}
 
 const Dashboard: FC<Props> = () => {
+  const query = useAppSelector(groupQuerySelector);
   const loading = useAppSelector(groupLoadingSelector);
   const groups = useAppSelector(groupsSelector);
+  const dispatch = useDispatch();
 
   let a = 0;
 
   const submit = (e: any) => {
-    fetchGroups({ query: e.target[0].value, status: "all-groups" });
+    dispatch(fetchQuery(e.target[0].value));
     e.preventDefault();
   };
   return (
@@ -37,7 +41,7 @@ const Dashboard: FC<Props> = () => {
           Icon={FiSearch}
           theme="dark"
           onChange={(e) => {
-            fetchGroups({ query: e.target.value, status: "all-groups" });
+            dispatch(fetchQuery(e.target.value));
           }}
         ></Input>
         <form onSubmit={submit} className="flex items-center">
@@ -105,13 +109,23 @@ const Dashboard: FC<Props> = () => {
         </div>
       )}
 
-      {!loading && groups.length === 0 && (
+      {!loading && query && groups.length === 0 && (
         <div
           className={
             "w-full rounded-lg bg-gray-100 text-gray-600 flex justify-center p-2"
           }
         >
           NO GROUPS FOUND
+        </div>
+      )}
+
+      {!loading && !query && groups.length === 0 && (
+        <div
+          className={
+            "w-full rounded-lg bg-gray-100 text-gray-600 flex justify-center p-2"
+          }
+        >
+          SEARCH THE GROUPS
         </div>
       )}
 
