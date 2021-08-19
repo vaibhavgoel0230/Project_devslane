@@ -13,8 +13,14 @@ interface GroupResponse {
   data: Group[];
 }
 
-export const fetchGroups = (data: GroupRequest, token?: CancelToken) => {
+export const fetchGroups = (data: GroupRequest) => {
   const url = BASE_URL + "/groups";
 
-  return get<GroupResponse>(url, { params: data, cancelToken: token });
+  return get<GroupResponse>(url, { params: data });
+};
+
+export const fetchOneGroup = (id: string) => {
+  const url = BASE_URL + "/groups/" + id;
+
+  return get<GroupResponse>(url);
 };

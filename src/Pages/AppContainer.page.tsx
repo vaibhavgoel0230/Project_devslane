@@ -8,6 +8,7 @@ import logo from "./media/logo.svg";
 import { FiChevronDown, FiMenu, FiSearch } from "react-icons/fi";
 import Input from "../Components/Input/Input";
 import Avatar from "../Components/Avatar/Avatar";
+import GroupDetailsPage from "./GroupDetailsPage.pages";
 
 interface Props {}
 const AppContainer: FC<Props> = (props) => {
@@ -55,6 +56,9 @@ const AppContainer: FC<Props> = (props) => {
         <Switch>
           <Route path="/dashboard">
             <DashboardPage></DashboardPage>
+          </Route>
+          <Route path="/groups/:groupId">
+            <GroupDetailsPage></GroupDetailsPage>
           </Route>
           <Route path="/recordings">
             <RecordingsPage></RecordingsPage>
