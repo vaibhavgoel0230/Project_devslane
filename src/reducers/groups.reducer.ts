@@ -2,22 +2,30 @@ import { Reducer } from "redux";
 import {
   GROUP_QUERY,
   GROUP_QUERY_RESULT,
+  GROUP_RETRIEVE,
   GROUP_RETRIEVE_COMPLETE,
+  GROUP_RETRIEVE_ERROR,
 } from "../actions/actions.constants";
 import { Group } from "../modals/Group";
-import { addMany, addOne, EntityState, getIds } from "./entity.reducer";
+import {
+  addMany,
+  addOne,
+  EntityState,
+  getIds,
+  initialEntityState,
+  select,
+  setErrorForOne,
+} from "./entity.reducer";
 
 export interface GroupState extends EntityState<Group> {
   query: string;
   queryMap: { [query: string]: number[] };
-  loading: boolean;
 }
 
 const initialState = {
-  byId: {},
+  ...initialEntityState,
   query: "",
   queryMap: {},
-  loading: false,
 };
 
 export const groupReducer: Reducer<GroupState> = (
@@ -25,11 +33,13 @@ export const groupReducer: Reducer<GroupState> = (
   action
 ) => {
   switch (action.type) {
+    case GROUP_RETRIEVE:
+      return select(state, action.payload) as GroupState;
     case GROUP_QUERY:
       return {
         ...state,
         query: action.payload,
-        loading: true,
+        loadingList: true,
       };
     case GROUP_QUERY_RESULT:
       const groups = action.payload.groups as Group[];
@@ -43,10 +53,13 @@ export const groupReducer: Reducer<GroupState> = (
           ...newState.queryMap,
           [action.payload.query]: groupIds,
         },
-        loading: false,
+        loadingList: false,
       };
     case GROUP_RETRIEVE_COMPLETE:
-      return addOne(state, action.payload) as GroupState;
+      return addOne(state, action.payload, false) as GroupState;
+    case GROUP_RETRIEVE_ERROR:
+      const { id, msg } = action.payload;
+      return setErrorForOne(state, id, msg) as GroupState;
     default:
       return state;
   }

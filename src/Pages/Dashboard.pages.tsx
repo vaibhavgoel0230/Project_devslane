@@ -13,8 +13,7 @@ import {
 import { FaSpinner } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { fetchQuery } from "../actions/groups.actions";
-import { useHistory } from "react-router-dom";
-import { group } from "console";
+import { Link } from "react-router-dom";
 
 interface Props {}
 
@@ -23,7 +22,6 @@ const Dashboard: FC<Props> = () => {
   const loading = useAppSelector(groupLoadingSelector);
   const groups = useAppSelector(groupsSelector);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   let a = 0;
 
@@ -70,44 +68,48 @@ const Dashboard: FC<Props> = () => {
           {groups.map(function (group) {
             a += 1;
             return a % 2 === 1 ? (
-              <div
-                key={group.id}
-                onClick={() => history.push("/groups/" + group.id)}
-                className={
-                  "w-full rounded-lg bg-gray-500 text-white mt-4 flex p-2 "
-                }
-              >
-                <div>
-                  <Img
-                    src={[group.group_image_url, altImage]}
-                    alt="Not Found"
-                    className="h-20 w-20 rounded-md"
-                  />
-                </div>
-                <div className="ml-2">
-                  <div className="capitalize">{`Name: ${group.name}`}</div>
-                  <div className="capitalize">{`Description: ${group.description}`}</div>
-                </div>
+              <div key={group.id}>
+                <Link to={"/groups/" + group.id}>
+                  <div
+                    className={
+                      "w-full rounded-lg bg-gray-500 text-white mt-4 p-2 flex"
+                    }
+                  >
+                    <div>
+                      <Img
+                        src={[group.group_image_url, altImage]}
+                        alt="Not Found"
+                        className="h-20 w-20 rounded-md"
+                      />
+                    </div>
+                    <div className="ml-2">
+                      <div className="capitalize">{`Name: ${group.name}`}</div>
+                      <div className="capitalize">{`Description: ${group.description}`}</div>
+                    </div>
+                  </div>
+                </Link>
               </div>
             ) : (
-              <div
-                key={group.id}
-                onClick={() => history.push("/groups" + group.id)}
-                className={
-                  "w-full rounded-lg bg-gray-100 text-gray-600 mt-4 flex justify-between p-2"
-                }
-              >
-                <div className="ml-24">
-                  <div className="capitalize">{`Name: ${group.name}`}</div>
-                  <div className="capitalize">{`Description: ${group.description}`}</div>
-                </div>
-                <div>
-                  <Img
-                    src={[group.group_image_url, altImage]}
-                    alt="Not Found"
-                    className="h-20 w-20 rounded-md"
-                  />
-                </div>
+              <div key={group.id}>
+                <Link to={"/groups/" + group.id}>
+                  <div
+                    className={
+                      "w-full rounded-lg bg-gray-100 text-gray-600 mt-4 flex justify-between p-2"
+                    }
+                  >
+                    <div className="ml-24">
+                      <div className="capitalize">{`Name: ${group.name}`}</div>
+                      <div className="capitalize">{`Description: ${group.description}`}</div>
+                    </div>
+                    <div>
+                      <Img
+                        src={[group.group_image_url, altImage]}
+                        alt="Not Found"
+                        className="h-20 w-20 rounded-md"
+                      />
+                    </div>
+                  </div>
+                </Link>
               </div>
             );
           })}

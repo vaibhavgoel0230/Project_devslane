@@ -1,16 +1,16 @@
 import { Reducer } from "redux";
 import { ME_FETCH, ME_LOGIN } from "../actions/actions.constants";
 import { User } from "../modals/User";
-import { addOne, EntityState } from "./entity.reducer";
+import { addOne, EntityState, initialEntityState } from "./entity.reducer";
 
 export interface UserState extends EntityState<User> {}
 
-const initialState = {
+export const initialState = {
   byId: {},
 };
 
 export const userReducer: Reducer<UserState> = (
-  state = initialState,
+  state = initialEntityState,
   action
 ) => {
   switch (action.type) {

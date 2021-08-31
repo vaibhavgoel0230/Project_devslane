@@ -12,6 +12,7 @@ import { GROUP_QUERY, GROUP_RETRIEVE } from "../actions/actions.constants";
 import {
   fetchedQueryExecuted,
   retrievalOneGroupComplete,
+  retrieveGroupError,
 } from "../actions/groups.actions";
 
 export function* fetchGroups(action: AnyAction): Generator<any> {
@@ -25,9 +26,14 @@ export function* fetchGroups(action: AnyAction): Generator<any> {
 }
 
 export function* fetchOne(action: AnyAction): Generator<any> {
-  const GroupResponse: any = yield call(fetchOneGroup, action.payload);
+  try {
+    const GroupResponse: any = yield call(fetchOneGroup, action.payload);
 
-  yield put(retrievalOneGroupComplete(GroupResponse.data.data));
+    yield put(retrievalOneGroupComplete(GroupResponse.data.data));
+  } catch (e) {
+    const error = e.response.data?.message || "Some error occured";
+    yield put(retrieveGroupError(action.payload, error));
+  }
 }
 
 export function* watchGroupQueryChanged() {

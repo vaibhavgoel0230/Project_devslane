@@ -4,6 +4,7 @@ import {
   GROUP_QUERY_RESULT,
   GROUP_RETRIEVE,
   GROUP_RETRIEVE_COMPLETE,
+  GROUP_RETRIEVE_ERROR,
 } from "./actions.constants";
 
 export const fetchQuery = (query: string) => ({
@@ -24,4 +25,9 @@ export const retrieveOneGroup = (id: number) => ({
 export const retrievalOneGroupComplete = (group: Group) => ({
   type: GROUP_RETRIEVE_COMPLETE,
   payload: group,
+});
+
+export const retrieveGroupError = (id: number, msg: string) => ({
+  type: GROUP_RETRIEVE_ERROR,
+  payload: { id, msg },
 });

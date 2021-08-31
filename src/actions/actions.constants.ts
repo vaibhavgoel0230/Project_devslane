@@ -5,3 +5,4 @@ export const GROUP_QUERY = "groups/query";
 export const GROUP_RETRIEVE = "groups/retrieve";
 export const GROUP_RETRIEVE_COMPLETE = "groups/retrieve_complete";
 export const GROUP_QUERY_RESULT = "groups/query_executed";
+export const GROUP_RETRIEVE_ERROR = "groups/retrieve_error";

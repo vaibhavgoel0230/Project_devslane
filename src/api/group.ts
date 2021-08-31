@@ -1,4 +1,3 @@
-import { CancelToken } from "axios";
 import { Group } from "../modals/Group";
 import { BASE_URL, get } from "./base";
 
